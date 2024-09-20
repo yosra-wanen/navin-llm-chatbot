@@ -3,7 +3,7 @@ name: Build, Release, and Send APK via Email
 on:
   push:
     branches:
-      - develop
+      - '*'
 
 jobs:
   build-release-and-send:
