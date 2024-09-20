@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ChatbotService {
@@ -26,7 +27,7 @@ class ChatbotService {
         }),
       );
 
-      print("response $response");
+      // print("response $response");
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -44,7 +45,9 @@ class ChatbotService {
         throw Exception('Failed to load chatbot response');
       }
     } catch (error) {
-      print('Error: $error');
+      if (kDebugMode) {
+        print('Error: $error');
+      }
       throw Exception('Failed to connect to chatbot API');
     }
   }
