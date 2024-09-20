@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:navin_chatbot/ChatScreen.dart';
+import 'package:navin_chatbot/chatScreen.dart';
+
 
 void main() {
   runApp(const ChatBotApp());

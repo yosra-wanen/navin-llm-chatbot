@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:navin_chatbot/services/chatbot_service.dart';
 
-
-import 'package:navin_chatbot/services/chatbot_service.dart';class ChatScreen extends StatefulWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
