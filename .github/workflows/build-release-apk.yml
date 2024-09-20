@@ -1,4 +1,4 @@
-name: Build, Release, and Send Web App via Email
+name: Build, Release, and Send APK via Email
 
 on:
   push:
@@ -30,15 +30,17 @@ jobs:
     - name: Get Flutter dependencies
       run: flutter pub get
 
-    # Build the web version of the Flutter app
+    - name: Build APK
+      run: flutter build apk --release
+    
+    # Build the Flutter Web App
     - name: Build Flutter Web App
       run: flutter build web --release
 
-    # Upload the web build as artifacts or host it on GitHub Pages
-    - name: Upload Web Build to GitHub Release
+    - name: Create GitHub Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "build/web/**/*"
+        artifacts: "build/app/outputs/apk/release/*"
         tag: v1.0.${{ github.run_number }}
         token: ${{ secrets.GITHUB_TOKEN }}
         name: 'Release v1.0.${{ github.run_number }}'
@@ -47,15 +49,16 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Send Email with Web App Download Link
+    - name: Send Email with APK Download Link
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: "smtp.gmail.com"
         server_port: 465
-        username: "wanenyosra@gmail.com"
-        password: "${{ secrets.EMAIL_PASSWORD }}"
-        subject: "New Web App Build Available"
-        body: "The new web build is available for download at: https://github.com/${{ github.repository }}/releases/download/v1.0.${{ github.run_number }}/web-build.zip"
-        to: "yosra.wanen@e-iagen.com"
-        from: "yosrawanene28@gmail.com"
-        secure: true
+        username: "wanenyosra@gmail.com"  
+        password: "${{ secrets.EMAIL_PASSWORD }}" 
+        subject: "New APK Build Available"
+        body: "The new APK build is available for download at: https://github.com/${{ github.repository }}/releases/download/v1.0.${{ github.run_number }}/app-release.apk
+           The new Web version of the app is accessible at: https://github.com/${{ github.repository }}/releases/download/v1.0.${{ github.run_number }}/web/index.html"
+        to: "yosra.wanen@e-iagen.com"  
+        from: "yosrawanene28@gmail.com"  
+        secure: true 
