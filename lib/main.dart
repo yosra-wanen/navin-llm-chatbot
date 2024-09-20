@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:navin_chatbot/chatScreen.dart';
+import 'package:navin_chatbot/views/chatbotScreen.dart';
 
 
 void main() {
@@ -22,7 +22,7 @@ class ChatBotApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 37, 154, 189)),
             useMaterial3: true,
           ),
-          home: const ChatScreen(),
+          home: const ChatbotScreen(),
         );
       },
     );

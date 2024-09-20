@@ -3,14 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:navin_chatbot/services/chatbot_service.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+class ChatbotScreen extends StatefulWidget {
+  const ChatbotScreen({super.key});
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<ChatbotScreen> createState() => _ChatbotScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatbotScreenState extends State<ChatbotScreen> {
   final TextEditingController _controller = TextEditingController();
   List<Map<String, dynamic>> messages = [];
   bool _isLoading = false;
