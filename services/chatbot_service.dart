@@ -1,11 +1,8 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-
-class ChatbotService{
- 
+class ChatbotService {
   static Future<String> getChatbotResponse(String userMessage) async {
     try {
       final response = await http.put(
@@ -15,17 +12,17 @@ class ChatbotService{
         },
         body: jsonEncode(<String, dynamic>{
           'sentences': [userMessage],
-          
-          //length of response 
-          'tokens_to_generate': 300,
-          'temperature': 1.0,
-          'add_BOS': true,
-          'top_k': 0,
-          'top_p': 0.9,
-          'greedy': false,
-          'all_probs': false,
-          'repetition_penalty': 1.2,
-          'min_tokens_to_generate': 2,
+
+          //length of response
+          "tokens_to_generate": 100,
+          "temperature": 0.3,
+          "add_BOS": true,
+          "top_k": 0,
+          "top_p": 0.9,
+          "greedy": true,
+          "all_probs": false,
+          "repetition_penalty": 1.2,
+          "min_tokens_to_generate": 2,
         }),
       );
 
@@ -37,7 +34,9 @@ class ChatbotService{
         // Extract the 'sentences' field
         if (jsonResponse.containsKey('sentences')) {
           final List<dynamic> sentences = jsonResponse['sentences'];
-          return sentences.isNotEmpty ? sentences[0] : 'No response from chatbot';
+          return sentences.isNotEmpty
+              ? sentences[0]
+              : 'No response from chatbot';
         } else {
           throw Exception('Sentences field not found in response');
         }
@@ -50,4 +49,3 @@ class ChatbotService{
     }
   }
 }
-
