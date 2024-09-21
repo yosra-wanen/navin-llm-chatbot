@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:navin_chatbot/services/chatbot_service.dart';
+import 'package:lottie/lottie.dart';  // Import Lottie
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});
@@ -30,8 +31,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     _controller.clear();
 
     try {
-     final chatbotResponse = await ChatbotService.getChatbotResponse(userMessage);
-
+      final chatbotResponse = await ChatbotService.getChatbotResponse(userMessage);
 
       setState(() {
         messages.add({
@@ -103,6 +103,74 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     );
   }
 
+  // Function to display the chatbot avatar and Lottie typing animation while waiting
+  Widget _buildTypingIndicator() {
+    double radius = 25.r;
+    double circleAvatarRadius = radius - 5.0.r;
+    double greenDotHeight = 10.h;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: radius,
+                  backgroundColor: Colors.white,
+                  child: CircleAvatar(
+                    radius: circleAvatarRadius,
+                    backgroundColor: Colors.grey[300],
+                    child: CircleAvatar(
+                      radius: 18.0.r,
+                      backgroundColor: Colors.white,
+                      child: Image.asset(
+                        "assets/images/chatavatar.png",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 1.0.h,
+                  right: 5.0.w,
+                  child: Container(
+                    width: greenDotHeight,
+                    height: greenDotHeight,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.0.h),
+          ],
+        ),
+        const SizedBox(width: 8.0),
+        Container(
+          padding: const EdgeInsets.all(2.0),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(15.0),
+              topRight: Radius.circular(15.0),
+              bottomLeft: Radius.circular(0.0),
+              bottomRight: Radius.circular(15.0),
+            ),
+          ),
+          child: Lottie.asset(
+            "assets/icons/typingDots.json", 
+            width: 50, 
+            height: 50, 
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildAvatar(bool isUser) {
     double radius = 25.r;
     double circleAvatarRadius = radius - 5.0.r;
@@ -164,6 +232,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("NAVIN LLM"),
         elevation: 0,
       ),
@@ -172,21 +241,21 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(8.0.r),
-              itemCount: messages.length,
+              itemCount: messages.length + (_isLoading ? 1 : 0),
               reverse: true,
               itemBuilder: (context, index) {
+                if (_isLoading && index == 0) {
+                  return _buildTypingIndicator();
+                }
+
+                final message = messages.reversed.toList()[_isLoading ? index - 1 : index];
                 return _buildMessage(
-                  messages.reversed.toList()[index]['text'],
-                  messages.reversed.toList()[index]['isUser'],
+                  message['text'],
+                  message['isUser'],
                 );
               },
             ),
           ),
-          if (_isLoading)
-            Padding(
-              padding: EdgeInsets.all(8.0.r),
-              child: CircularProgressIndicator(),
-            ),
           Padding(
             padding: EdgeInsets.all(8.0.r),
             child: Container(
